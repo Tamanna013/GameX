@@ -7,10 +7,10 @@ I created a platform where the user can play 10 games in total all in one place.
 #### displayWord(), isWordGuessed(), hangman()
 1. words vector with 1000 words created.
 2. do-while loop to ensure the game continues on and on
-   >> We randomly select a word out of words and display it using displayWord() function.
-   >> incorrectGuesses vector stores all the wrong character guesses and later this along with the number of attempts left is displayed.
-   >> This cycle is repeated until the number of attempts left is zero or the word is guessed.
-   >> Each input of the user is checked. If it matches the original word then the displayed word is modified accordingly, else "Incorrect guess!" message is displayed.
+   - We randomly select a word out of words and display it using displayWord() function.
+   - incorrectGuesses vector stores all the wrong character guesses and later this along with the number of attempts left is displayed.
+   - This cycle is repeated until the number of attempts left is zero or the word is guessed.
+   - Each input of the user is checked. If it matches the original word then the displayed word is modified accordingly, else "Incorrect guess!" message is displayed.
 
 ## Rock-Paper-Scissors:
 #### enum Choice{ROCK=1, PAPER, SCISSORS}; getChoiceName(), determineRoundWinner(), rockPaperScissors()
