@@ -228,6 +228,70 @@ void rockPaperScissors() {
 }
 
 
+
+// NUMBER-GUESSING-GAME
+void numberGuessingGame(){
+    srand(static_cast<unsigned int>(time(0)));
+
+    int rangeStart = 1, rangeEnd = 100;
+    int attempts = 7; 
+    char playAgain = 'y';
+
+    while (playAgain == 'y' || playAgain == 'Y') {
+        int numberToGuess = rand() % (rangeEnd - rangeStart + 1) + rangeStart;
+        int guess;
+        bool won = false;
+
+        cout << "------------------------------------------\n";
+    	cout << "          Number Guessing Game         \n";
+    	cout << "------------------------------------------\n";
+    	cout << "       Can you guess the number?       \n";
+    	cout << "------------------------------------------\n\n";
+        cout << " I'm thinking of a number between " << rangeStart << " and " << rangeEnd << ".\n";
+    	cout << " You have " << attempts << " attempts to guess it.\n";
+    	cout << "Good luck!\n\n";
+    	
+        for (int attempt = 1; attempt <= attempts; ++attempt) {
+            cout << " Attempt " << attempt << " of " << attempts << ": ";
+            cin >> guess;
+            while (cin.fail()) {
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << " Invalid input. Please enter a number: ";
+                cin >> guess;
+            }
+            
+            if (guess == numberToGuess) {
+                won = true;
+                break;
+            } else if (guess < numberToGuess) {
+                cout << " Too low! Try a higher number.\n";
+            } else {
+                cout << " Too high! Try a lower number.\n";
+            }
+
+            if (attempt < attempts) {
+                cout << "-----------------------------------\n";
+            }
+        }
+        
+	cout << "-----------------------------------\n";
+        if (won) {
+        cout << " Congratulations! You guessed the number correctly! ??\n";
+    	} else {
+        cout << " Game Over! The correct number was " << number << ". Better luck next time!\n";
+    	}
+	cout << "-----------------------------------\n";
+		
+        cout << "\nWould you like to play again? (y/n): ";
+        cin >> playAgain;
+        cout << endl;
+    }
+
+    cout << "Thanks for playing! See you next time!\n";
+}
+
+
 // DRIVER CODE
 int main() {
     vector<string> games = {"Hangman", "Rock, Paper, Scissors", "Crossword", "Maze Solver", "Memory Game", "Quiz Game", "Snake Game", "Tic-Tac-Toe", "Sudoku", "Number Guessing Game"};
