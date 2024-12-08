@@ -228,6 +228,135 @@ void rockPaperScissors() {
 }
 
 
+// CROSSWORD
+const int SIZE = 20;
+char grid[SIZE][SIZE];
+void crossword() {
+    srand(static_cast<unsigned int>(time(0)));
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            grid[i][j] = '.';
+        }
+    }
+    vector<string> words;
+    words.push_back("CROSS");
+    words.push_back("WORD");
+    words.push_back("CODE");
+    words.push_back("GAME");
+    words.push_back("FUN");
+    for (size_t i = 0; i < words.size(); ++i) {
+        bool placed = false;
+        while (!placed) {
+            int row = rand() % SIZE;
+            int col = rand() % SIZE;
+            bool isHorizontal = rand() % 2 == 0; 
+
+            bool canPlace = true;
+            if (isHorizontal) {
+                if (col + words[i].length() > SIZE) canPlace = false;
+                for (int j = 0; j < words[i].length(); ++j) {
+                    if (grid[row][col + j] != '.' && grid[row][col + j] != words[i][j]) {
+                        canPlace = false;
+                        break;
+                    }
+                }
+                if (canPlace) {
+                    for (int j = 0; j < words[i].length(); ++j) {
+                        grid[row][col + j] = words[i][j];
+                    }
+                    placed = true;
+                }
+            } else {
+                if (row + words[i].length() > SIZE) canPlace = false;
+                for (int j = 0; j < words[i].length(); ++j) {
+                    if (grid[row + j][col] != '.' && grid[row + j][col] != words[i][j]) {
+                        canPlace = false;
+                        break;
+                    }
+                }
+                if (canPlace) {
+                    for (int j = 0; j < words[i].length(); ++j) {
+                        grid[row + j][col] = words[i][j];
+                    }
+                    placed = true;
+                }
+            }
+        }
+    }
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            if (grid[i][j] == '.') {
+                grid[i][j] = 'A' + rand() % 26;
+            }
+        }
+    }
+    cout << "=====================================\n";
+    cout << "          Welcome to Crossword       \n";
+    cout << "=====================================\n";
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            cout << grid[i][j] << ' ';
+        }
+        cout << endl;
+    }
+    cout << "--------------------------------------\n";
+    char playAgain;
+    do {
+        bool allFound = true;
+        
+        // Ask the user to find each word in the grid
+        for (const string& word : words) {
+            string inputWord;
+            bool found = false;
+
+            // Repeat until the user finds the word
+            while (!found) {
+                cout << "Enter the starting row and column for the word \"" << word << "\" (0 to " << SIZE - 1 << "): ";
+                int startRow, startCol;
+                char direction;
+                cin >> startRow >> startCol;
+                cout << "Is the word horizontal? (y/n): ";
+                cin >> direction;
+                bool isHorizontal = (direction == 'y' || direction == 'Y');
+
+                // Verify if the word exists at the given location
+                bool isCorrect = true;
+                if (isHorizontal) {
+                    for (int i = 0; i < word.length(); ++i) {
+                        if (grid[startRow][startCol + i] != word[i]) {
+                            isCorrect = false;
+                            break;
+                        }
+                    }
+                } else {
+                    for (int i = 0; i < word.length(); ++i) {
+                        if (grid[startRow + i][startCol] != word[i]) {
+                            isCorrect = false;
+                            break;
+                        }
+                    }
+                }
+
+                // Output the result of the guess
+                if (isCorrect) {
+                    cout << "Congratulations! You found the word \"" << word << "\"!\n";
+                    found = true;
+                } else {
+                    cout << "Sorry, the word \"" << word << "\" is not found at the specified location. Try again.\n";
+                }
+            }
+        }
+
+        // Ask if the player wants to play again
+        cout << "Do you want to play again? (y/n): ";
+        cin >> playAgain;
+
+    } while (playAgain == 'y' || playAgain == 'Y');
+
+    cout << "Thank you for playing!\n";
+    return 0;
+}
+
 
 // NUMBER-GUESSING-GAME
 void numberGuessingGame(){
