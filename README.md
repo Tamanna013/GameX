@@ -19,6 +19,21 @@ I created a platform where the user can play 10 games in total all in one place.
 3. getChoiceName() function has the cases for the user to choose from. determineRoundWinner() compares the priorities of rock, paper, and scissors and gives the scores accordingly.
 4. At the end, playerScore and computerScore are compared and the winner is announced.
 
+## Crossword:
+#### const int SIZE=20; char grid[SIZE][SIZE]; crossword()
+1. Time is provided as a seed to generate random characters.
+2. The very first for loop is to initialize our crossword board.
+3. Next we define words vector as a list of words to place in the grid. We add 5 words in the list.
+4. With the next for loop, we randomly add these list of words in the crossword grid.
+   - We take a flag variable placed which is turned true when all the letters of a word (from the words vector) are placed in the grid.
+   - While placed is false, random row and column is selected. Now we randomly select if the word would go horizontal or vertical and consider the canPlace flag as true. This flag will turn to false when an already existing word is found at the supposed spot of placement of our current word.
+   - The next comes a set of if-else statements which check if word can be placed; if yes then the word is placed on the grid and if no then the loop is repeated until the collision is resolved and all the words are placed.
+5. The next for loop fills the rest of the grid with random characters.
+6. Now the grid is printed and displayed in front of the user. Now comes the game loop:
+   - User is asked to find each word in the crossword. When they enter the indexes of the word correctly, check its validity.
+   - The next set of if-else statements check if the word (if it is found or not at the specified location). Later the user is displayed message if they found it correct or not.
+7. Then the loop asks if the user wants to play again and the loop works accordingly.
+
 ## Number-Guessing-Game:
 #### numberGuessingGame()
 1. A range (ie., from 1 to 100) is selected and a random number (ie., the number to be guessed) is taken from this range.
