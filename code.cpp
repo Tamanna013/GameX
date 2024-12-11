@@ -358,6 +358,89 @@ void crossword() {
 }
 
 
+// QUIZ-GAME:
+struct Question {
+    string questionText;
+    vector<string> options;
+    char correctAnswer;
+};
+vector<Question> initializeQuestions() {
+    vector<Question> questions = {
+        {"What is the time complexity of binary search?", {"A) O(n)", "B) O(log n)", "C) O(n^2)", "D) O(1)"}, 'B'},
+        {"Which of the following is a dynamically typed language?", {"A) Java", "B) C++", "C) Python", "D) C"}, 'C'},
+        {"Which sorting algorithm is the most efficient for large datasets?", {"A) Bubble Sort", "B) Selection Sort", "C) Merge Sort", "D) Insertion Sort"}, 'C'},
+        {"What does SQL stand for?", {"A) Structured Query Language", "B) Simple Query Language", "C) Sorted Queue Language", "D) Styled Query Language"}, 'A'},
+        {"In OOP, what does 'inheritance' allow?", {"A) Code reuse", "B) Memory management", "C) Debugging", "D) None of the above"}, 'A'},
+        {"Which language is known as the backbone of web development?", {"A) Python", "B) Java", "C) JavaScript", "D) Swift"}, 'C'},
+        {"What is the primary use of Git?", {"A) Project management", "B) Version control", "C) Task scheduling", "D) Error handling"}, 'B'},
+        {"In C++, which keyword is used to define a constant?", {"A) define", "B) static", "C) const", "D) final"}, 'C'},
+        {"Which symbol is used for comments in Python?", {"A) //", "B) /* */", "C) #", "D) %"}, 'C'},
+        {"What is a pointer in C++?", {"A) A variable that stores a memory address", "B) A function", "C) A class", "D) A file handler"}, 'A'},
+        {"What does CSS stand for?", {"A) Cascading Style Sheets", "B) Computer Styling System", "C) Creative Style Sheet", "D) Complex Style Sheet"}, 'A'},
+        {"Which data structure uses LIFO order?", {"A) Queue", "B) Stack", "C) Tree", "D) Graph"}, 'B'},
+        {"What is a binary tree?", {"A) A type of graph", "B) A tree with only two children per node", "C) A tree with two roots", "D) A linked list"}, 'B'},
+        {"In HTML, which tag is used for links?", {"A) <a>", "B) <p>", "C) <link>", "D) <href>"}, 'A'},
+        {"Which HTTP method is used to retrieve data?", {"A) POST", "B) GET", "C) PUT", "D) DELETE"}, 'B'},
+        {"Which of the following is a NoSQL database?", {"A) MySQL", "B) PostgreSQL", "C) MongoDB", "D) SQLite"}, 'C'},
+        {"In computer networks, what does DNS stand for?", {"A) Domain Name System", "B) Data Name System", "C) Digital Network Service", "D) Domain Network System"}, 'A'},
+        {"Which protocol is used for secure communication over the internet?", {"A) HTTP", "B) FTP", "C) HTTPS", "D) SMTP"}, 'C'},
+        {"Which language is primarily used for data analysis?", {"A) Java", "B) Ruby", "C) R", "D) PHP"}, 'C'},
+        {"What is the use of the 'return' keyword in C++?", {"A) To end a program", "B) To repeat a loop", "C) To end a function and return a value", "D) To declare a variable"}, 'C'}
+    };
+    return questions;
+}
+void displayQuestion(const Question& q) {
+    cout << q.questionText << "\n";
+    for (const string& option : q.options) {
+        cout << option << "\n";
+    }
+    cout << "Your answer (A, B, C, or D): ";
+}
+
+int main() {
+    vector<Question> questions = initializeQuestions();
+    srand(static_cast<unsigned int>(time(0)));
+
+    int score = 0;
+    int totalQuestions = 5;
+    vector<int> askedQuestions;
+
+    cout << "---------------------------------------\n";
+    cout << "             Tech Quiz Game        \n";
+    cout << "---------------------------------------\n\n";
+
+    for (int i = 0; i < totalQuestions; ++i) {
+        int questionIndex;
+        do {
+            questionIndex = rand() % questions.size();
+        } while (find(askedQuestions.begin(), askedQuestions.end(), questionIndex) != askedQuestions.end());
+        askedQuestions.push_back(questionIndex);
+        displayQuestion(questions[questionIndex]);
+        char answer;
+        cin >> answer;
+        answer = toupper(answer);
+        if (answer == questions[questionIndex].correctAnswer) {
+            cout << "Correct! \n";
+            ++score;
+        } else {
+            cout << "Oops! The correct answer was " << questions[questionIndex].correctAnswer << ".\n";
+        }
+        cout << "-----------------------------------\n";
+    }
+    cout << "Quiz Complete!\n";
+    cout << "Your Score: " << score << "/" << totalQuestions << "\n";
+    if (score == totalQuestions) {
+        cout << " Excellent! You nailed it! \n";
+    } else if (score >= totalQuestions / 2) {
+        cout << " Good job! Keep practicing!\n";
+    } else {
+        cout << " Better luck next time!\n";
+    }
+
+    return 0;
+}
+
+
 // NUMBER-GUESSING-GAME
 void numberGuessingGame(){
     srand(static_cast<unsigned int>(time(0)));
