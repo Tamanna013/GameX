@@ -92,6 +92,30 @@ After the game ends, the user is prompted to play again. If they choose “yes,�
    - Answer Validation: Compares the player’s input with the correct answer and updates the score.
    - Result Display: After all questions are answered, the final score and a message are shown based on performance.
 
+## Tic-Tac-Toe:
+
+1. *main()*
+   - Initializes the game by creating an empty board. Alternates between players, calling playerMove() to make moves.  
+   - After every move, calls checkWin() to see if someone has won and isBoardFull() to check for a draw. If the game ends, asks players if they want to reset the board using resetBoard() and play again.
+
+2. *printBoard()*
+   - Displays the current state of the board. Each cell is shown with proper formatting to make the board clear.  
+   - Helps players know which cells are available or already occupied.
+
+3. *playerMove()*
+   - Asks the current player to enter the row and column of their move. Validates the input to ensure it's within bounds and the cell is empty.  
+   - Updates the board with the player's symbol ('X' or 'O') once the move is valid.
+
+4. *checkWin()* 
+   - Checks all rows, columns, and diagonals to see if there are three identical symbols ('X' or 'O') in a line.  
+   - If a winning condition is found, returns true; otherwise, returns false.
+
+5. *isBoardFull()*
+   - Loops through every cell in the board. If at least one cell is empty (' '), it returns false, meaning the board is not full. If all cells are occupied, returns true, indicating a draw.
+
+6. *resetBoard()*
+   - Resets the entire board to its initial empty state with all cells set to ' '. Prepares the game for a fresh start.  
+
 ## Number-Guessing-Game:
 #### numberGuessingGame()
 1. A range (ie., from 1 to 100) is selected and a random number (ie., the number to be guessed) is taken from this range.
