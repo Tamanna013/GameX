@@ -79,6 +79,19 @@ The game continues until all pairs are found.
 8. *Replayability:*
 After the game ends, the user is prompted to play again. If they choose “yes,” the board is reinitialized, and the game restarts.  
 
+## Quiz-Game:
+1. *Question Struct:* 
+   - Contains the question text, a list of options, and the correct answer.
+2. *initializeQuestions Function:* 
+   - Initializes a list of quiz questions with their options and correct answers.
+3. *displayQuestion Function:*
+   - Displays a question and its options to the player.
+4. *main Function:*
+   - Setup: Initializes the quiz questions and sets a score variable.
+   - Quiz Loop: Randomly selects and displays 5 unique questions to the player.
+   - Answer Validation: Compares the player’s input with the correct answer and updates the score.
+   - Result Display: After all questions are answered, the final score and a message are shown based on performance.
+
 ## Number-Guessing-Game:
 #### numberGuessingGame()
 1. A range (ie., from 1 to 100) is selected and a random number (ie., the number to be guessed) is taken from this range.
