@@ -34,7 +34,7 @@ I created a platform where the user can play 10 games in total all in one place.
    - The next set of if-else statements check if the word (if it is found or not at the specified location). Later the user is displayed message if they found it correct or not.
 7. Then the loop asks if the user wants to play again and the loop works accordingly.
 
-### Maze Game Summary
+## Maze Solver:
 1. Maze Generation:  
    - The maze grid is initialized with walls (`#`) by default.  
    - A guaranteed path from the start (`S`) to the end (`E`) is created, ensuring the game is always solvable.  
@@ -51,6 +51,33 @@ I created a platform where the user can play 10 games in total all in one place.
    - If you hit a wall, you'll be notified and can try another move.
 5. Replayability:  
    - Once the player wins, they are asked if they want to play again. The maze is randomly regenerated for a fresh challenge each time.
+
+## Memory Game:
+1. *printBoard Function*  
+This function is responsible for displaying the current state of the game board.  
+   - The board is displayed as a grid where revealed numbers are shown, and hidden numbers are replaced with *.
+   - Each cell in the grid is aligned neatly using setw() for formatting.
+   - The revealed matrix is used to determine which numbers are visible.  
+2. *initializeBoard Function*  
+This function sets up the game board with pairs of random numbers.  
+3. *Generating Pairs*
+  The board is filled with pairs of numbers up to half the board size. For a 8x8 grid, it generates numbers from 1 to 16 (total 64 cells).  
+4. *Shuffling*  
+  The numbers are shuffled randomly using the C++ <random> library to ensure each game has a different layout.  
+5. *Filling the Board*
+  The shuffled numbers are distributed across a 2D vector that represents the grid.
+6. *Game Initialization*
+The board is created using initializeBoard(), and a corresponding revealed matrix is initialized with false to hide all numbers.
+7. *Game Loop* 
+The game continues until all pairs are found.  
+   - Display the Board: The printBoard function shows the current state of the board. Hidden cards are marked with *, while revealed cards display their numbers.  
+   - First Card Input: The player enters the row and column coordinates for the first card. If the card is already revealed, the game prompts the player to pick another one.  
+   - Second Card Input: The player enters coordinates for the second card. The game ensures the player doesn’t pick the same card twice or choose an already revealed card.  
+   - Matching Logic: If the two selected cards have the same number, the pair is marked as matched, and the numbers remain visible. If they don’t match, the cards are flipped back (hidden) after showing the board temporarily.  
+   - Attempt Counter: The attempts variable increments each time the player selects two cards.  
+   - Win Condition: The game ends when all pairs are found (pairsFound == totalPairs), and the player is congratulated with their total attempts displayed. 
+8. *Replayability:*
+After the game ends, the user is prompted to play again. If they choose “yes,” the board is reinitialized, and the game restarts.  
 
 ## Number-Guessing-Game:
 #### numberGuessingGame()
