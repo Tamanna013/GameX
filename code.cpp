@@ -349,7 +349,6 @@ void crossword() {
     } while (playAgain == 'y' || playAgain == 'Y');
 
     cout << "Thank you for playing!\n";
-    return 0;
 }
 
 
@@ -681,8 +680,6 @@ void ticTacToe() {
         cout << "Do you want to play again? (y/n): ";
         cin >> choice;
     } while (choice == 'y');
-
-    return 0;
 }
 
 
@@ -736,7 +733,7 @@ void numberGuessingGame(){
         if (won) {
         cout << " Congratulations! You guessed the number correctly! ??\n";
     	} else {
-        cout << " Game Over! The correct number was " << number << ". Better luck next time!\n";
+        cout << " Game Over! The correct number was " << numberToGuess << ". Better luck next time!\n";
     	}
 	cout << "-----------------------------------\n";
 		
@@ -749,18 +746,112 @@ void numberGuessingGame(){
 }
 
 
-// SUDOKU:
-#include <iostream>
-#include <vector>
-#include <cstdlib>
-#include <ctime>
-#include <algorithm>
-#include <random> 
+// MEMORY-GAME:
+vector<vector<char> > initializeGrid() {
+    vector<char> elements = {'A', 'A', 'B', 'B', 'C', 'C', 'D', 'D', 'E', 'E', 'F', 'F', 'G', 'G', 'H', 'H'};
+    shuffle(elements.begin(), elements.end(), default_random_engine(static_cast<unsigned> (time(0))));
+    vector<vector<char> > grid(4, vector<char>(4));
+    int index = 0;
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            grid[i][j] = elements[index++];
+        }
+    }
+    return grid;
+}
 
+void displayGrid(const vector<vector<char>>& grid, const vector<vector<bool> >& revealed) {
+    cout << "\n-------------------------------\n";
+    cout << "           Memory Game           \n";
+    cout << "---------------------------------\n\n";
+    cout << "    1  2  3  4\n";
+    cout << "  +------------+\n";
+    for (int i = 0; i < 4; ++i) {
+        cout << i + 1 << " | ";
+        for (int j = 0; j < 4; ++j) {
+            if (revealed[i][j]) {
+                cout << grid[i][j] << "  ";
+            } else {
+                cout << "*  ";
+            }
+        }
+        cout << "|\n";
+    }
+    cout << "  +------------+\n";
+}
+
+void memoryGame() {
+    char playAgain;
+    do {
+        vector<vector<char>> grid = initializeGrid();
+        vector<vector<bool>> revealed(4, vector<bool>(4, false));
+        int matchesFound = 0;
+
+        cout << "==============================\n";
+        cout << "            Welcome           \n";
+        cout << "==============================\n";
+        cout << "Instructions:\n";
+        cout << "Match all pairs to win the game!\n";
+        cout << "Enter coordinates (row and column) to reveal a tile.\n";
+        cout << "Let's begin!\n\n";
+
+        while (matchesFound < 8) {
+            displayGrid(grid, revealed);
+
+            int row1, col1, row2, col2;
+            cout << "Enter the coordinates for the first tile (row column): ";
+            cin >> row1 >> col1;
+            cout << "Enter the coordinates for the second tile (row column): ";
+            cin >> row2 >> col2;
+
+            row1--;
+            col1--;
+            row2--;
+            col2--;
+
+            if (row1 < 0 || row1 >= 4 || col1 < 0 || col1 >= 4 || 
+                row2 < 0 || row2 >= 4 || col2 < 0 || col2 >= 4 || 
+                (row1 == row2 && col1 == col2) || 
+                revealed[row1][col1] || revealed[row2][col2]) {
+                cout << "Invalid selection. Please try again.\n";
+                continue;
+            }
+
+            revealed[row1][col1] = true;
+            revealed[row2][col2] = true;
+            displayGrid(grid, revealed);
+
+            if (grid[row1][col1] == grid[row2][col2]) {
+                cout << "?? It's a match! ??\n";
+                matchesFound++;
+            } else {
+                cout << "Not a match. Try again.\n";
+                revealed[row1][col1] = false;
+                revealed[row2][col2] = false;
+            }
+            cout << "--------------------------------\n";
+        }
+
+        cout << "   Congratulations! You've matched all pairs!   \n";
+        cout << "==============================\n";
+        cout << "          Game Complete          \n";
+        cout << "==============================\n";
+        cout << "Would you like to play again? (y/n): ";
+        cin >> playAgain;
+        playAgain = tolower(playAgain);
+
+    } while (playAgain == 'y');
+
+    cout << "Thank you for playing! Goodbye!\n";
+}
+
+
+
+// SUDOKU:
 const int SIZE = 9;
 
 void printBoard(const vector<vector<int> >& board) {
-    cout << "Current Sudoku Board:\n";
+    cout << endl << "Current Sudoku Board:\n";
     for (int i = 0; i < SIZE; ++i) {
         if (i % 3 == 0 && i != 0) {
             cout << "----------------------------------------------------------------\n";
@@ -777,7 +868,7 @@ void printBoard(const vector<vector<int> >& board) {
 }
 
 void printSolution(const vector<vector<int> >& board) {
-    cout << "Solved Sudoku Board:\n";
+    cout << endl <<  "Solved Sudoku Board:\n";
     for (int i = 0; i < SIZE; ++i) {
         if (i % 3 == 0 && i != 0) {
             cout << "------------------------------------------------------------------------\n";
@@ -928,7 +1019,7 @@ void sudoku() {
 
 // DRIVER CODE
 int main() {
-    vector<string> games = {"Hangman", "Rock, Paper, Scissors", "Crossword", "Maze Solver", "Memory Game", "Quiz Game", "Snake Game", "Tic-Tac-Toe", "Sudoku", "Number Guessing Game"};
+    vector<string> games = {"Hangman", "Rock, Paper, Scissors", "Crossword", "Maze Solver", "Memory Game", "Quiz Game", "Tic-Tac-Toe", "Sudoku", "Number Guessing Game"};
     int choice;
 
     do {
@@ -963,10 +1054,9 @@ int main() {
         else if (choice == 4) mazeSolver();
         else if (choice == 5) memoryGame();
         else if (choice == 6) quizGame();
-        else if (choice == 7) snakeGame();
-        else if (choice == 8) ticTacToe();
-        else if (choice == 9) sudoku();
-        else if (choice == 10) numberGuessingGame();
+        else if (choice == 7) ticTacToe();
+        else if (choice == 8) sudoku();
+        else if (choice == 9) numberGuessingGame();
     	else if (choice == 0) cout << "\nExiting the console. Goodbye!\n";
     	else cout << "\nInvalid choice. Please try again.\n";
     } while (choice != 0);
