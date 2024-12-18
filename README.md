@@ -97,24 +97,31 @@ After the game ends, the user is prompted to play again. If they choose â€œyes,â
 1. *main()*
    - Initializes the game by creating an empty board. Alternates between players, calling playerMove() to make moves.  
    - After every move, calls checkWin() to see if someone has won and isBoardFull() to check for a draw. If the game ends, asks players if they want to reset the board using resetBoard() and play again.
-
 2. *printBoard()*
    - Displays the current state of the board. Each cell is shown with proper formatting to make the board clear.  
    - Helps players know which cells are available or already occupied.
-
 3. *playerMove()*
    - Asks the current player to enter the row and column of their move. Validates the input to ensure it's within bounds and the cell is empty.  
    - Updates the board with the player's symbol ('X' or 'O') once the move is valid.
-
 4. *checkWin()* 
    - Checks all rows, columns, and diagonals to see if there are three identical symbols ('X' or 'O') in a line.  
    - If a winning condition is found, returns true; otherwise, returns false.
-
 5. *isBoardFull()*
    - Loops through every cell in the board. If at least one cell is empty (' '), it returns false, meaning the board is not full. If all cells are occupied, returns true, indicating a draw.
-
 6. *resetBoard()*
    - Resets the entire board to its initial empty state with all cells set to ' '. Prepares the game for a fresh start.  
+
+## SUDOKU:
+1. `printBoard()`: Displays the current Sudoku board with empty cells shown as dots (`.`) and filled cells showing their respective numbers.
+2. `printSolution()`: Displays the fully solved Sudoku board.
+3. `canPlace()`: Checks if a number can be placed at a given position (row, col) in the board by verifying the row, column, and 3x3 subgrid for conflicts.
+4. `solveSudoku()`: Solves the Sudoku puzzle using a backtracking algorithm by trying numbers from 1 to 9 and recursively attempting to fill the board. If a number leads to an invalid state, it backtracks.
+5. `fillBoard()`: Attempts to fill the Sudoku board with valid numbers. It randomly shuffles numbers (1-9) and tries placing them in empty cells until the board is completely filled.
+6. `removeNumbers()`: Removes a set number (20 in this case) of randomly chosen numbers from the filled board to create the puzzle with some empty cells.
+7. `isSolved()`: Checks if the Sudoku board is completely filled, i.e., no empty cells are left.
+8. `generateSudoku()`: Generates a new Sudoku puzzle by filling the board with numbers and then removing some to create a puzzle for the player.
+9. `playSudoku()`: Manages the gameplay loop where the user is prompted to input moves (row, column, number). It validates the moves and displays the updated board. If the user quits, it solves the puzzle automatically and displays the solution.
+10. `sudoku()`: Initializes the game, repeatedly generates a new Sudoku puzzle, and lets the user play until they decide to quit. It handles the game restart prompt as well.
 
 ## Number-Guessing-Game:
 #### numberGuessingGame()
