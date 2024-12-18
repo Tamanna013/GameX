@@ -749,6 +749,183 @@ void numberGuessingGame(){
 }
 
 
+// SUDOKU:
+#include <iostream>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+#include <algorithm>
+#include <random> 
+
+const int SIZE = 9;
+
+void printBoard(const vector<vector<int> >& board) {
+    cout << "Current Sudoku Board:\n";
+    for (int i = 0; i < SIZE; ++i) {
+        if (i % 3 == 0 && i != 0) {
+            cout << "----------------------------------------------------------------\n";
+        }
+        for (int j = 0; j < SIZE; ++j) {
+            if (j % 3 == 0 && j != 0) {
+                cout << "| ";
+            }
+            cout << (board[i][j] == 0 ? "." : to_string(board[i][j])) << "\t";
+        }
+        cout << endl;
+    }
+    cout << endl;
+}
+
+void printSolution(const vector<vector<int> >& board) {
+    cout << "Solved Sudoku Board:\n";
+    for (int i = 0; i < SIZE; ++i) {
+        if (i % 3 == 0 && i != 0) {
+            cout << "------------------------------------------------------------------------\n";
+        }
+        for (int j = 0; j < SIZE; ++j) {
+            if (j % 3 == 0 && j != 0) {
+                cout << "| ";
+            }
+            cout << board[i][j] << "\t";
+        }
+        cout << endl;
+    }
+    cout << endl;
+}
+
+bool canPlace(const vector<vector<int> >& board, int row, int col, int num) {
+    for (int x = 0; x < SIZE; ++x) {
+        if (board[row][x] == num || board[x][col] == num) return false;
+    }
+    int startRow = row - row % 3, startCol = col - col % 3;
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            if (board[i + startRow][j + startCol] == num) return false;
+        }
+    }
+    return true;
+}
+
+bool solveSudoku(vector<vector<int> >& board) {
+    for (int row = 0; row < SIZE; ++row) {
+        for (int col = 0; col < SIZE; ++col) {
+            if (board[row][col] == 0) {
+                for (int num = 1; num <= 9; ++num) {
+                    if (canPlace(board, row, col, num)) {
+                        board[row][col] = num;
+                        if (solveSudoku(board)) return true;
+                        board[row][col] = 0;
+                    }
+                }
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+void fillBoard(vector<vector<int> >& board) {
+    for (int row = 0; row < SIZE; ++row) {
+        for (int col = 0; col < SIZE; ++col) {
+            if (board[row][col] == 0) {
+                vector<int> numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+                shuffle(numbers.begin(), numbers.end(), default_random_engine(random_device()()));
+                for (int num : numbers) {
+                    if (canPlace(board, row, col, num)) {
+                        board[row][col] = num;
+                        if (solveSudoku(board)) return;
+                        board[row][col] = 0;
+                    }
+                }
+                return;
+            }
+        }
+    }
+}
+
+void removeNumbers(vector<vector<int> >& board) {
+    int count = 20;
+    while (count != 0) {
+        int i = rand() % SIZE;
+        int j = rand() % SIZE;
+        if (board[i][j] != 0) {
+            board[i][j] = 0;
+            count--;
+        }
+    }
+}
+
+bool isSolved(const vector<vector<int> >& board) {
+    for (const auto& row : board) {
+        for (int cell : row) {
+            if (cell == 0) return false;
+        }
+    }
+    return true;
+}
+
+void generateSudoku(vector<vector<int> >& board) {
+    srand(static_cast<unsigned int>(time(0)));
+    fillBoard(board);
+    removeNumbers(board);
+}
+
+void playSudoku(vector<vector<int> >& board) {
+    int row, col, num;
+    while (true) {
+        printBoard(board);
+        cout << "Enter your move (row 0-8, column 0-8, number 1-9) or -1 to quit: ";
+        cin >> row;
+
+        if (row == -1) {
+            cout << "Solving the Sudoku...\n";
+            solveSudoku(board);
+            printSolution(board);
+            break;
+        }
+
+        cin >> col >> num;
+        cout << "You entered: " << row << " " << col << " " << num << endl;
+        if (row < 0 || row >= SIZE || col < 0 || col >= SIZE || num < 1 || num > 9) {
+            cout << "Invalid input! Please try again." << endl << endl;
+            continue;
+        }
+        if (board[row][col] != 0) {
+            cout << "Cell already filled! Try a different cell." << endl << endl;
+        } else if (canPlace(board, row, col, num)) {
+            board[row][col] = num;
+            cout << "Move accepted!" << endl << endl;
+        } else {
+            cout << "Invalid move! Try again." << endl << endl;
+        }
+        if (isSolved(board)) {
+            cout << "Congratulations! You've solved the Sudoku!" << endl << endl;
+            break;
+        }
+    }
+}
+
+void sudoku() {
+    vector<vector<int> > board(SIZE, vector<int>(SIZE, 0));
+    
+    do {
+        cout << "--------------------- SUDOKU GAME ---------------------\n\n";
+        generateSudoku(board);
+        playSudoku(board);
+        cout << "Do you want to play again or generate a new puzzle? (y/n): ";
+        char choice;
+        cin >> choice;
+        cout << endl;
+        if (choice != 'y' && choice != 'Y') {
+            break;
+        }
+    } while (true);
+    
+    cout << "Thank you for playing! Goodbye!" << endl;
+}
+
+
+
 // DRIVER CODE
 int main() {
     vector<string> games = {"Hangman", "Rock, Paper, Scissors", "Crossword", "Maze Solver", "Memory Game", "Quiz Game", "Snake Game", "Tic-Tac-Toe", "Sudoku", "Number Guessing Game"};
