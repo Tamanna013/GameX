@@ -14,7 +14,7 @@
 using namespace std;
 
 
-// HANGMAN
+// HANGMAN:
 void displayWord(const string& word, const vector<bool>& guessed) {
     for (size_t i = 0; i < word.length(); ++i) {
         if (guessed[i]) {
@@ -82,8 +82,7 @@ void hangman() {
     	"working", "wounded", "writers", "writing", "written", "yanking", "yearned", "yelling", "yielded", "yogurts", "younger", "youthful", "zapping", "zealots", 
     	"zigzags", "zipping", "zodiacs", "zombie", "zooming", "zookeeper", "zymurgy", "zythums"
 	};
-
-
+	
     char playAgain;
     do {
         srand(static_cast<unsigned int>(time(0)));
@@ -231,6 +230,7 @@ void rockPaperScissors() {
 // CROSSWORD
 const int SIZE = 20;
 char grid[SIZE][SIZE];
+
 void crossword() {
     srand(static_cast<unsigned int>(time(0)));
     for (int i = 0; i < SIZE; ++i) {
@@ -238,12 +238,14 @@ void crossword() {
             grid[i][j] = '.';
         }
     }
+	
     vector<string> words;
     words.push_back("CROSS");
     words.push_back("WORD");
     words.push_back("CODE");
     words.push_back("GAME");
     words.push_back("FUN");
+	
     for (size_t i = 0; i < words.size(); ++i) {
         bool placed = false;
         while (!placed) {
@@ -303,13 +305,9 @@ void crossword() {
     char playAgain;
     do {
         bool allFound = true;
-        
-        // Ask the user to find each word in the grid
         for (const string& word : words) {
             string inputWord;
             bool found = false;
-
-            // Repeat until the user finds the word
             while (!found) {
                 cout << "Enter the starting row and column for the word \"" << word << "\" (0 to " << SIZE - 1 << "): ";
                 int startRow, startCol;
@@ -318,9 +316,8 @@ void crossword() {
                 cout << "Is the word horizontal? (y/n): ";
                 cin >> direction;
                 bool isHorizontal = (direction == 'y' || direction == 'Y');
-
-                // Verify if the word exists at the given location
                 bool isCorrect = true;
+		    
                 if (isHorizontal) {
                     for (int i = 0; i < word.length(); ++i) {
                         if (grid[startRow][startCol + i] != word[i]) {
@@ -337,7 +334,6 @@ void crossword() {
                     }
                 }
 
-                // Output the result of the guess
                 if (isCorrect) {
                     cout << "Congratulations! You found the word \"" << word << "\"!\n";
                     found = true;
@@ -347,7 +343,6 @@ void crossword() {
             }
         }
 
-        // Ask if the player wants to play again
         cout << "Do you want to play again? (y/n): ";
         cin >> playAgain;
 
@@ -355,6 +350,130 @@ void crossword() {
 
     cout << "Thank you for playing!\n";
     return 0;
+}
+
+
+// MaAZE-SOLVER:
+const int MAZE_SIZE = 10;
+const char WALL = '#';
+const char PATH = ' ';
+const char START = 'S';
+const char END = 'E';
+const char PLAYER = 'P';
+
+struct Position {
+    int row, col;
+};
+
+void createPath(vector<vector<char> >& maze, Position start, Position end) {
+    int row = start.row;
+    int col = start.col;
+    maze[row][col] = START;
+	
+    while (row != end.row || col != end.col) {
+        if ((rand() % 2 == 0 && col < end.col) || row == end.row) {
+            col++;
+        } else {
+            row++;
+        }
+        maze[row][col] = PATH;
+    }
+    maze[end.row][end.col] = END;
+}
+
+vector<vector<char> > generateMaze() {
+    vector<vector<char> > maze(MAZE_SIZE, vector<char>(MAZE_SIZE, WALL));
+    Position start = {1, 1};
+    Position end = {MAZE_SIZE - 2, MAZE_SIZE - 2};
+    createPath(maze, start, end);
+    for (int i = 1; i < MAZE_SIZE - 1; ++i) {
+        for (int j = 1; j < MAZE_SIZE - 1; ++j) {
+            if (maze[i][j] != START && maze[i][j] != END && rand() % 3 != 0) {
+                maze[i][j] = PATH;
+            }
+        }
+    }
+    return maze;
+}
+
+void displayMaze(const vector<vector<char> >& maze, const Position& playerPos) {
+    for (int i = 0; i < MAZE_SIZE; ++i) {
+        for (int j = 0; j < MAZE_SIZE; ++j) {
+            if (i == playerPos.row && j == playerPos.col) {
+                cout << PLAYER << " ";
+            } else {
+                cout << maze[i][j] << " ";
+            }
+        }
+        cout << "\n";
+    }
+    cout << "\n";
+}
+
+bool isMoveValid(const vector<vector<char> >& maze, int row, int col) {
+    return (row >= 0 && row < MAZE_SIZE && col >= 0 && col < MAZE_SIZE &&
+            maze[row][col] != WALL);
+}
+
+void clearScreen() {
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
+}
+
+void mazeSolver() {
+    char playAgain;
+    do {
+        srand(time(0));
+        vector<vector<char> > maze = generateMaze();
+        Position start = {1, 1};
+        Position end = {MAZE_SIZE - 2, MAZE_SIZE - 2};
+        Position playerPos = start;
+	    
+        cout << "==============================\n";
+        cout << "           Maze Game          \n";
+        cout << "==============================\n";
+        cout << "Instructions:\n";
+        cout << "Navigate from 'S' (start) to 'E' (end) using W (up), A (left), S (down), and D (right).\n";
+        cout << "Walls are marked with '#'. Paths are marked with spaces.\n";
+        cout << "Good luck!\n\n";
+	    
+        while (playerPos.row != end.row || playerPos.col != end.col) {
+            displayMaze(maze, playerPos);
+            cout << "Enter your move (W, A, S, D): ";
+            char move;
+            cin >> move;
+            move = toupper(move);
+            Position newPos = playerPos;
+            switch (move) {
+                case 'W': newPos.row -= 1; break;
+                case 'S': newPos.row += 1; break;
+                case 'A': newPos.col -= 1; break;
+                case 'D': newPos.col += 1; break;
+                default: 
+                	clearScreen();
+                    cout << "Invalid move. Use W, A, S, D only.\n"; 
+                    continue;
+            }
+		
+            if (isMoveValid(maze, newPos.row, newPos.col)) {
+                playerPos = newPos;
+                clearScreen();
+            } else {
+        		clearScreen();
+                cout << "Oops! You hit a wall. Try a different direction.\n";
+            }
+        }
+	    
+        cout << "\nCongratulations! You've reached the end of the maze!\n";
+        cout << "\nWould you like to play again? (y/n): ";
+        cin >> playAgain;
+        playAgain = tolower(playAgain);
+    } while (playAgain == 'y');
+	
+    cout << "Thank you for playing! Goodbye!\n";
 }
 
 
