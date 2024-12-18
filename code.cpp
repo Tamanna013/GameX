@@ -353,7 +353,7 @@ void crossword() {
 }
 
 
-// MaAZE-SOLVER:
+// MAZE-SOLVER:
 const int MAZE_SIZE = 10;
 const char WALL = '#';
 const char PATH = ' ';
