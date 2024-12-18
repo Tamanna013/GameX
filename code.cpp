@@ -516,7 +516,7 @@ void displayQuestion(const Question& q) {
     cout << "Your answer (A, B, C, or D): ";
 }
 
-int main() {
+void quizGame() {
     vector<Question> questions = initializeQuestions();
     srand(static_cast<unsigned int>(time(0)));
 
@@ -555,6 +555,132 @@ int main() {
     } else {
         cout << " Better luck next time!\n";
     }
+}
+
+
+// TIC-TAC-TOE:
+vector<vector<char> > board(3, vector<char>(3, ' '));
+char currentPlayer = 'X';
+string player1Name, player2Name;
+
+void printBoard() {
+    cout << "\nCurrent Board:\n";
+    for (int i = 0; i < 3; ++i) {
+        cout << " " << board[i][0] << " | " << board[i][1] << " | " << board[i][2] << " \n";
+        if (i < 2) cout << "---|---|---\n";
+    }
+    cout << endl;
+}
+
+void resetBoard() {
+    board.assign(3, vector<char>(3, ' '));
+    currentPlayer = 'X';
+}
+
+bool checkWin(char player) {
+    for (int i = 0; i < 3; ++i) {
+        if ((board[i][0] == player && board[i][1] == player && board[i][2] == player) ||
+            (board[0][i] == player && board[1][i] == player && board[2][i] == player)) {
+            return true;
+        }
+    }
+    return (board[0][0] == player && board[1][1] == player && board[2][2] == player) ||
+           (board[0][2] == player && board[1][1] == player && board[2][0] == player);
+}
+
+bool isBoardFull() {
+    for (size_t i = 0; i < board.size(); ++i) {
+        for (size_t j = 0; j < board[i].size(); ++j) {
+            if (board[i][j] == ' ') {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+void playerMove(const string& playerName) {
+    int row, col;
+    while (true) {
+        cout << playerName << " please enter your move (row and column: 0, 1, or 2): ";
+        cin >> row >> col;
+        if (row >= 0 && row < 3 && col >= 0 && col < 3 && board[row][col] == ' ') {
+            board[row][col] = currentPlayer;
+            break;
+        } else {
+            cout << "Invalid move! Try again.\n";
+        }
+    }
+}
+
+void aiMove() {
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            if (board[i][j] == ' ') {
+                board[i][j] = currentPlayer;
+                cout << "AI plays at: " << i << ", " << j << "\n";
+                return;
+            }
+        }
+    }
+}
+
+void ticTacToe() {
+    cout << "Welcome to Tic Tac Toe!\n";
+    cout << "Enter name for Player 1 (X): ";
+    getline(cin, player1Name);
+
+    char gameMode;
+    cout << "Choose game mode: (1) Single Player (2) Two Player: ";
+    cin >> gameMode;
+
+    if (gameMode == '2') {
+        cout << "Enter name for Player 2 (O): ";
+        cin.ignore();
+        getline(cin, player2Name);
+    } else {
+        player2Name = "AI";
+    }
+
+    char choice;
+    cout << "Do you want Player 1 (X) to play first? (y/n): ";
+    cin >> choice;
+    if (choice == 'n') {
+        currentPlayer = 'O';
+    }
+
+    bool twoPlayerMode = (gameMode == '2');
+
+    do {
+        resetBoard();
+        while (true) {
+            printBoard();
+            if (currentPlayer == 'X') {
+                playerMove(player1Name);
+            } else {
+                if (twoPlayerMode) {
+                    playerMove(player2Name);
+                } else {
+                    aiMove();
+                }
+            }
+
+            if (checkWin(currentPlayer)) {
+                printBoard();
+                cout << (currentPlayer == 'X' ? player1Name : player2Name) << " wins!\n";
+                break;
+            } else if (isBoardFull()) {
+                printBoard();
+                cout << "It's a draw!\n";
+                break;
+            }
+
+            currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+        }
+
+        cout << "Do you want to play again? (y/n): ";
+        cin >> choice;
+    } while (choice == 'y');
 
     return 0;
 }
