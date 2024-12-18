@@ -34,6 +34,24 @@ I created a platform where the user can play 10 games in total all in one place.
    - The next set of if-else statements check if the word (if it is found or not at the specified location). Later the user is displayed message if they found it correct or not.
 7. Then the loop asks if the user wants to play again and the loop works accordingly.
 
+### Maze Game Summary
+1. Maze Generation:  
+   - The maze grid is initialized with walls (`#`) by default.  
+   - A guaranteed path from the start (`S`) to the end (`E`) is created, ensuring the game is always solvable.  
+   - Additional random paths are carved to add complexity.
+2. Gameplay Mechanics:  
+   - Players control their position in the maze, represented by `P`.  
+   - Use **W (up), A (left), S (down), and D (right)** to move through the maze.  
+   - Moves are validated to ensure players don't walk through walls. Invalid moves prompt a retry.
+3. Objective:  
+   - Successfully navigate from `S` (starting point) to `E` (exit) by finding the correct path.  
+   - The player wins upon reaching the end.
+4. Interactive Features:  
+   - A graphical display of the maze updates in real-time, showing the player’s position.  
+   - If you hit a wall, you'll be notified and can try another move.
+5. Replayability:  
+   - Once the player wins, they are asked if they want to play again. The maze is randomly regenerated for a fresh challenge each time.
+
 ## Number-Guessing-Game:
 #### numberGuessingGame()
 1. A range (ie., from 1 to 100) is selected and a random number (ie., the number to be guessed) is taken from this range.
